@@ -12,8 +12,8 @@ import numpy as np
 
 def bagrov(n, step=0.0001,PEmax=4):
     """
-    Original Bagrov (1953) equation in dimensionless form to compute real
-    evapotranspiration ETR
+    Numerical solution of Bagrov's (1953) differential equation in 
+    dimensionless form to compute real evapotranspiration ETR
 
     Parameters
     ----------
@@ -29,9 +29,9 @@ def bagrov(n, step=0.0001,PEmax=4):
     Returns
     -------
     TYPE
-        1D numpy array that contains ascending values of P/ETmax.
+        1D numpy array that contains ascending values of P/ETmax (x).
     TYPE
-        1D numpy array that contains ascending values of ETR/ETmax.
+        1D numpy array that contains ascending values of ETR/ETmax (y).
 
     """
     nEis = np.arange(0,1,step)
