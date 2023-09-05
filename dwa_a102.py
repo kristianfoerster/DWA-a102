@@ -1059,7 +1059,7 @@ class Measure(object):
         validRange(a_3, 'a_1_pod_system')
         validRange(a_4, 'a_1_pod_system')
         
-        v = ((self.etp*aw)/(self.p*(aw + A_1*a_1 + A_2*a_2
+        v = (self.etp*aw)/(self.p*(aw + (A_1*a_1 + A_2*a_2
                                     + A_3*a_3 + A_4*a_4)))
         a = 1 - v
         g = 0
@@ -1084,9 +1084,9 @@ class Measure(object):
         # Runoff volume are passed to measure, Va = 0
         previous_results.Va = 0                      
 
-        area = 0
+        area = aw # M.Kielhorn: von Null auf aw gesetzt, damit die Fläche des Teichsystems angezeigt wird!
 
-        results = [{'Element' : 'Rainwater usage', 'Area' : round(area),
+        results = [{'Element' : 'pond_system', 'Area' : round(area),
                     'Au' : round(au), 'P': self.p, 'Etp' : self.etp,
                     'a' : round(a, 3), 'g' : round(g, 3), 'v' : round(v, 3),
                     'e' : round(e, 3), 'Vp': round(area*self.p/1000),
