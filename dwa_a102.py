@@ -1087,7 +1087,7 @@ class Measure(object):
         results = [{'Element' : 'pond_system', 'Area' : round(area),
                     'Au' : round(au), 'P': self.p, 'Etp' : self.etp,
                     'a' : round(a, 3), 'g' : round(g, 3), 'v' : round(v, 3),
-                    'e' : round(e, 3), 'Vp': round(area*self.p/1000+va),
+                    'e' : round(e, 3), 'Vp': round(area*self.p/1000),
                     'Va' : round((area*self.p/1000 + va)*a),
                     'Vg' : round((area*self.p/1000 + va)*g),
                     'Vv' : round((area*self.p/1000 + va)*v),
