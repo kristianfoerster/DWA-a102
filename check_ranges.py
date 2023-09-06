@@ -36,10 +36,6 @@ param_rages = {
     'VBr_rainwater_usage': [0, 5, 'Available water volume (vbr)', 'mm/d'],
     'FAbw_rainwater_usage': [0, 5, 'Proportion of irrigated area (fabw)', ''],
     'qBw_rainwater_usage': [0, 200, 'Specific annual requirement for irrigation (qbw)', 'l/(m^2*year)'],
-    'a_1_pod_system': [0.0, 1.0, 'Proportion of area 1 (a_1)', ''],
-    'a_2_pod_system': [0.0, 1.0, 'Proportion of area 2 (a_2)', ''],
-    'a_3_pod_system': [0.0, 1.0, 'Proportion of area 3 (a_3)', ''],
-    'a_4_pod_system': [0.0, 1.0, 'Proportion of area 4 (a_4)', ''],
     }
 
 

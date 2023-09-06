@@ -551,7 +551,7 @@ class Measure(object):
             "Measure to reduce runoff from the given surfaces."
             "The following methos area available: drainage(), "
             "surf_infiltration(), infilt_swale(), swale_trench(), "
-            "swale_trench_system(), rainwater_usage(), and pod_system()"
+            "swale_trench_system(), rainwater_usage(), and pond_system()"
     )
     #%% Aufteilungswerte und Berechnungsansätze für Anlagen
     # Ableitung: Rohr, Rinne, steiler Graben
@@ -1024,8 +1024,9 @@ class Measure(object):
     #%% Berechnungsansatz B.7: Wasserfläche mit Dauerstau
     #### Water surface with permanent storage  
     # Pond system with inflow from paved areas
-    def pod_system(self, aw, A_1, a_1, *surfaces, A_2= 0, a_2= 0.0, A_3= 0, a_3= 0.0,
-               A_4= 0, a_4= 0.0):
+    #def pod_system(self, aw, A_1, a_1, *surfaces, A_2= 0, a_2= 0.0, A_3= 0, a_3= 0.0,
+    #           A_4= 0, a_4= 0.0):
+    def pond_system(self, aw, *surfaces):
         '''
         Calculates water balance components for pod systems
         (water surface with permanent storage)
@@ -1035,32 +1036,29 @@ class Measure(object):
         Aw : float
             pod surface (m2)
             
-        A_i, ... , A_n : float
-                       Area i, which directs its runoff to the pond (m2)
-                       
-        a_i, ... , a_n : float
-                       proportion of area i (0.0-1.0), which directs its
-                       runoff to the pond (-) 
+        *surfaces : arbitrary number of Measure objects (passed as tuple)
                             
-        Notes    
-        ------
-        Ranges of validity for the parameters are:
-          P : 500 - 1700 mm/a
-          ETp : 450 - 700 mm/a
-          a_i : 0 - 1
                    
         Returns
         -------
         results : DataFrame 
         '''
         
-        validRange(a_1, 'a_1_pod_system')
-        validRange(a_2, 'a_2_pod_system')
-        validRange(a_3, 'a_1_pod_system')
-        validRange(a_4, 'a_1_pod_system')
+        #validRange(a_1, 'a_1_pod_system')
+        #validRange(a_2, 'a_2_pod_system')
+        #validRange(a_3, 'a_1_pod_system')
+        #validRange(a_4, 'a_1_pod_system')
         
-        v = (self.etp*aw)/(self.p*(aw + (A_1*a_1 + A_2*a_2
-                                    + A_3*a_3 + A_4*a_4)))
+        #v = (self.etp*aw)/(self.p*(aw + (A_1*a_1 + A_2*a_2
+        #                            + A_3*a_3 + A_4*a_4)))
+
+        # more general desgin of incorp. of inflow elements        
+        areas = aw
+        for si in surfaces:
+            areas += float(si.Au) # aw + sum(A_i * a_i)
+        
+        v = (self.etp*aw)/(self.p*areas)
+        
         a = 1 - v
         g = 0
         e = 0
@@ -1089,7 +1087,7 @@ class Measure(object):
         results = [{'Element' : 'pond_system', 'Area' : round(area),
                     'Au' : round(au), 'P': self.p, 'Etp' : self.etp,
                     'a' : round(a, 3), 'g' : round(g, 3), 'v' : round(v, 3),
-                    'e' : round(e, 3), 'Vp': round(area*self.p/1000),
+                    'e' : round(e, 3), 'Vp': round(area*self.p/1000+va),
                     'Va' : round((area*self.p/1000 + va)*a),
                     'Vg' : round((area*self.p/1000 + va)*g),
                     'Vv' : round((area*self.p/1000 + va)*v),
