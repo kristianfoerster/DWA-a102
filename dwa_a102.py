@@ -175,7 +175,7 @@ class Surface(object):
         return(results)
     
     #%% Berechnungsansatz A.4: Gründächer    
-    def green_roof(self, area, h, kf=70, wkmax_wp=0.5):
+    def green_roof(self, area, h, fg=1.0, AWC=0.5):
         '''
         Calculates water balance components for green roofs
         
@@ -185,40 +185,46 @@ class Surface(object):
               element area (m2)      
 
         h : float
-          installation heigth (mm)
+          installation height (mm)
             
-        kf : float 
-            hydraulic conductivity (mm /h)  
+        fg : float 
+            greening factor
         
-        WKmax_WP : float
-                  maximal water capacity (WKmax) minus wilting point (WP) (-)
+        AWC : float
+                  maximum available water content, (WKmax) minus wilting point (WP) (-)
                         
         Notes    
         ------
         Ranges of validity for the parameters are:
           h : 40 - 500 mm
-          kf : 18 - 100 mm/h
-          WKmax_WP : 0.35 - 0.65
+          fg : 1.0 - 1.4
+          AWC : 0.3 - 0.8
           
         Standard values are:
-          kf = 70 mm/h
-          WKmax_WP = 0.5
+          AWC = 0.5
               
         Returns
         -------
         results : DataFrame 
         '''       
         validRange(h, 'h_green_roof')
-        validRange(kf, 'kf_green_roof')
-        validRange(wkmax_wp, 'WKmax_WP_green_roof')
+        validRange(fg, 'fg_green_roof')
+        validRange(AWC, 'AWC_green_roof')
         
-        a = (-2.182 + 0.4293*np.log(self.p) - 0.0001092*self.p
-             + (236.1/self.etp) + 0.0001142*h + 0.0002297*kf
-             + 0.01628*np.log(wkmax_wp) - 0.1214*np.log(wkmax_wp*h))
+        # old version (2021)
+        #a = (-2.182 + 0.4293*np.log(self.p) - 0.0001092*self.p
+        #     + (236.1/self.etp) + 0.0001142*h + 0.0002297*kf
+        #     + 0.01628*np.log(wkmax_wp) - 0.1214*np.log(wkmax_wp*h))
+        
+        # new (March 2022)
+        a = -8.3518 - 0.2455*fg - 0.1095*np.log(h) - 0.05748/AWC - \
+            0.4256*AWC + 1.781*np.log(self.p) - 0.002133 * self.p + \
+            7.7488E-7 * (self.p - self.etp)**2 - 0.0005051 * self.etp
+        
         g = 0
         v = 1-a-g
         e = 0
-        results = [{'Element' : 'Green foof', 'Area' : round(area, 3),
+        results = [{'Element' : 'Green roof', 'Area' : round(area, 3),
                     'Au' : round(area*a), 'P': self.p, 'Etp' : self.etp,
                     'a' : round(a, 3), 'g' : round(g, 3), 'v' : round(v, 3),
                     'e' : round(e, 3), 'Vp': round(area*self.p/1000),
