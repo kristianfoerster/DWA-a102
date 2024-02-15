@@ -67,9 +67,15 @@ climate_dict = {
     'Wiesbaden' : [631.0, 650.5],
     'Wuppertal' : [1290.0, 572.8],
     'Würzburg' : [618.0, 652.9],
+    'default' : [720, 630],
 }
 
 def climate(place):
+    if place not in climate_dict.keys():
+        default = 'default'
+        print('%s not found. Using default values P=%.1f, E=%.1f' % \
+              (place, climate_dict[default][0], climate_dict[default][1]))
+        place = default
     p = climate_dict[place][0]
     etp = climate_dict[place][1]
     return p, etp
