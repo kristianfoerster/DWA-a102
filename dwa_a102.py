@@ -1105,14 +1105,14 @@ class Measure(object):
 
 #%% Starting class Surface
 class StudyArea(Surface, Measure):
-    def __init__(self, p=800, etp=500, location=None):
+    def __init__(self, p=800, etp=500, location=None, p_corr_factor=1.0):
         self.location = location        
         if self.location:
             p, etp = climate(self.location)
-            self.p = p
+            self.p = p*p_corr_factor
             self.etp = etp
         else:
-            self.p = p
+            self.p = p*p_corr_factor
             self.etp = etp
 
         validRange(self.p, 'P')
