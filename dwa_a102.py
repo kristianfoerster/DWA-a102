@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 from check_ranges import validRange
 from climate import climate
+from simple_bagluva import bagrov, direct_runoff_ratio
 
 #%% Starting class Surface
 
@@ -1106,6 +1107,25 @@ class Measure(object):
 #%% Starting class Surface
 class StudyArea(Surface, Measure):
     def __init__(self, p=800, etp=500, location=None, p_corr_factor=1.0):
+        '''
+        Creates a new study area object.
+
+        Parameters
+        ----------
+        p : int, optional
+            Avg. annual precipitation depth. The default is 800 mm / yr
+        etp : int, optional
+            Avg. annual evapotranspiration depth. The default is 500 mm / yr.
+        location : str, optional
+            City name to look up. The default is None.
+        p_corr_factor : float, optional
+            Sacling factor to correct preipiation for undercatch. The default is 1.0.
+
+        Returns
+        -------
+        None.
+
+        '''
         self.location = location        
         if self.location:
             p, etp = climate(self.location)
@@ -1123,6 +1143,70 @@ class StudyArea(Surface, Measure):
             f"Study area has a precipitation of {self.p} mm/a,"
             f" and potential evapotranspiration of {self.etp} mm/a"
             )
+    
+    def natural_wb_guess(self, bagrov_n,soil,slope,gwd,land,verbose=False):
+        '''
+        Makes a guess about the site's natural water balance and returns an
+        array. First element is ET, second is direct runoff, and third is
+        groundwater recharge.
+
+        Parameters
+        ----------
+        bagrov_n : float
+            Bagrov's n parameter.
+        soil : int
+            Soil class from range 1 to 5 (lower numbers refer to soils with 
+                                          lower direct runoff).
+        slope : float
+            Slope percentage.
+        gwd : float
+            Depth of the water table (ground water).
+        land : str
+            Land use type, either open or forest.
+        
+        verbose : boolean
+            Whether to print water balance. Default is False.
+
+        Returns
+        -------
+        None.
+
+        '''
+        
+        # ration P/ETP
+        n_pe = self.p / self.etp
+        
+        # creat Bagrov curve
+        nPEis,nEis = bagrov(bagrov_n)
+        
+        #read value, check position of closest value
+        index = (np.abs(nPEis - n_pe)).argmin()
+        # corresponding ETR/ETP ratio and ETR calculation
+        n_e = nEis[index]
+        ETR = n_e * self.etp
+        
+        # close water balance
+        R = self.p - ETR
+        
+        # get direct discharge ratio and compute runoff components
+        n_r = direct_runoff_ratio(soil,slope,gwd,land)
+        
+        Rd = n_r*R
+        GWR = (1-n_r)*R
+        
+        if verbose:
+            print('Natural water balance approximation')
+            print('===================================')
+            print('\nunits in mm/year\n')
+            print('P   = %6.1f'% self.p)
+            print('ETP = %6.1f'% self.etp)
+            print('ETR = %6.1f'% ETR)
+            print('Rd  = %6.1f'% Rd)
+            print('GWR = %6.1f'% GWR)
+            print('\nWater balance check: %.1e'%(self.p - ETR - Rd - GWR))
+        
+        return ETR, Rd, GWR
+        
 
 def watbal(*study_areas):
         '''
