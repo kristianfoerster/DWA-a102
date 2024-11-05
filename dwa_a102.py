@@ -641,8 +641,8 @@ class Measure(object):
         au = 0
         va = 0
         for df in surfaces:
-            au += float(df[-1:]['Au'])
-            va += float(df[-1:]['Va'])
+            au += float(df.iloc[-1]['Au'])
+            va += float(df.iloc[-1]['Va'])
             
         # A df with the previous results is required
         previous_results = pd.DataFrame(columns = ['Element', 'Area', 'Au',
@@ -713,8 +713,8 @@ class Measure(object):
         au = 0
         va = 0
         for df in surfaces:
-            au += float(df[-1:]['Au'])
-            va += float(df[-1:]['Va'])
+            au += float(df.iloc[-1]['Au'])
+            va += float(df.iloc[-1]['Va'])
             
         # A df with the previous results is required
         previous_results = pd.DataFrame(columns = ['Element', 'Area', 'Au',
@@ -786,19 +786,21 @@ class Measure(object):
         au = 0
         va = 0
         for df in surfaces:
-            au += float(df[-1:]['Au'])
-            va += float(df[-1:]['Va'])
+            au += float(df.iloc[-1]['Au'])
+            va += float(df.iloc[-1]['Va'])
             
         # A df with the previous results is required
-        previous_results = pd.DataFrame(columns = ['Element', 'Area', 'Au',
-                                                   'P', 'Etp','a', 'g', 'v', 
-                                                   'e', 'Vp', 'Va', 'Vg',
-                                                   'Vv', 'Ve'])
+        #previous_results = pd.DataFrame(columns = ['Element', 'Area', 'Au',
+        #                                           'P', 'Etp','a', 'g', 'v', 
+        #                                           'e', 'Vp', 'Va', 'Vg',
+        #                                           'Vv', 'Ve'])
                 
         # Joinning previous dfs of results
-        for df in surfaces:
-            previous_results = pd.concat([previous_results, df])
-            
+        #for df in surfaces:
+        #    previous_results = pd.concat([previous_results, df])
+
+        previous_results = pd.concat(surfaces, ignore_index=True)
+        
         # Runoff volume are passed to measure, Va = 0
         previous_results.Va = 0                      
 
@@ -859,8 +861,8 @@ class Measure(object):
         au = 0
         va = 0
         for df in surfaces:
-            au += float(df[-1:]['Au'])
-            va += float(df[-1:]['Va'])
+            au += float(df.iloc[-1]['Au'])
+            va += float(df.iloc[-1]['Va'])
             
         # A df with the previous results is required
         previous_results = pd.DataFrame(columns = ['Element', 'Area', 'Au',
@@ -940,8 +942,8 @@ class Measure(object):
         au = 0
         va = 0
         for df in surfaces:
-            au += float(df[-1:]['Au'])
-            va += float(df[-1:]['Va'])
+            au += float(df.iloc[-1]['Au'])
+            va += float(df.iloc[-1]['Va'])
             
         # A df with the previous results is required
         previous_results = pd.DataFrame(columns = ['Element', 'Area', 'Au',
@@ -1034,8 +1036,8 @@ class Measure(object):
         au = 0
         va = 0
         for df in surfaces:
-            au += float(df[-1:]['Au'])
-            va += float(df[-1:]['Va'])
+            au += float(df.iloc[-1]['Au'])
+            va += float(df.iloc[-1]['Va'])
             
         # A df with the previous results is required
         previous_results = pd.DataFrame(columns = ['Element', 'Area', 'Au',
@@ -1108,8 +1110,8 @@ class Measure(object):
         au = 0
         va = 0
         for df in surfaces:
-            au += float(df[-1:]['Au'])
-            va += float(df[-1:]['Va'])
+            au += float(df.iloc[-1]['Au'])
+            va += float(df.iloc[-1]['Va'])
             
         # A df with the previous results is required
         previous_results = pd.DataFrame(columns = ['Element', 'Area', 'Au',
@@ -1257,9 +1259,11 @@ def watbal(*study_areas):
         -------
         results : DataFrame 
         '''
-        df_layout = pd.DataFrame(columns = ['Element', 'Area','a', 'g', 'v', 
-                                                   'e', 'Vp', 'Va', 'Vg',
-                                                   'Vv', 'Ve'])
+        
+        # deprecation warning
+        #df_layout = pd.DataFrame(columns = ['Element', 'Area','a', 'g', 'v',
+        #                                           'e', 'Vp', 'Va', 'Vg',
+        #                                           'Vv', 'Ve'])
         
         area, vp, va, vg, vv, ve = 0, 0, 0, 0, 0, 0
         for df in study_areas:
@@ -1281,7 +1285,8 @@ def watbal(*study_areas):
         
         sys_results = pd.DataFrame(sys_results)
         
-        sys_results = pd.concat([df_layout, *study_areas, sys_results],
+        # df_layout dropped
+        sys_results = pd.concat([*study_areas, sys_results],
                                 join= "inner", ignore_index=True)
         
 
