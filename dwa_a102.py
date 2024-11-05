@@ -1294,7 +1294,8 @@ def watbal(*study_areas):
         return(sys_results)
         
 def plot_watbal(*study_areas):
-    res = watbal(study_areas)
+    res = watbal(*study_areas)
     res.set_index('Element', inplace=True)
     res.drop(columns=['Area','Vp','Va','Vg','Vv'], inplace=True)
-    res.plot(kind='bar')
+    ax = res.plot(kind='bar')
+    ax.set_ylabel('a, v, g [-]')
