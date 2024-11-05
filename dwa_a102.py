@@ -235,7 +235,42 @@ class Surface(object):
                     'Ve' : round(area*self.p*e/1000)}] 
         results = pd.DataFrame(results)
         return(results)
-    
+        
+    def green_roof_shallow(self, area):
+        '''
+        Calculates water balance components for shallow green roofs < 4cm
+        according to Schwarzer, A.; Steinhoff-Knopp, B.; Westerholt, D.;
+        Förster, K. (2024): Die Wasserbilanz dünnschichtiger Gründachaufbauten
+        und deren Variabilität innerhalb Deutschlands. Korrespondenz
+        Wasserwirtschaft 17 (9), S. 570-577. DOI: 10.3243/kwe2024.09.004
+        
+        Parameters
+        ----------
+        Area : float
+              element area (m2)
+
+              
+        Returns
+        -------
+        results : DataFrame
+        '''
+        
+        a = -1.327185 + -0.000066 * self.p + -0.000398 * self.etp + 0.336548 * np.log(self.p) + -3.050779e-08 * (self.p-self.etp)**2
+        
+        g = 0
+        v = 1-a-g
+        e = 0
+        results = [{'Element' : 'Green roof shallow', 'Area' : round(area, 3),
+                    'Au' : round(area*a), 'P': self.p, 'Etp' : self.etp,
+                    'a' : round(a, 3), 'g' : round(g, 3), 'v' : round(v, 3),
+                    'e' : round(e, 3), 'Vp': round(area*self.p/1000),
+                    'Va' : round(area*self.p*a/1000),
+                    'Vg' : round(area*self.p*g/1000),
+                    'Vv' : round(area*self.p*v/1000),
+                    'Ve' : round(area*self.p*e/1000)}]
+        results = pd.DataFrame(results)
+        return(results)
+
     #%% Berechnungsansatz A.5: Einstaudächer
     def storage_roof(self, area, sp=5):
         '''
