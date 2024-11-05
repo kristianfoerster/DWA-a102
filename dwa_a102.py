@@ -1292,3 +1292,9 @@ def watbal(*study_areas):
             sys_results = sys_results.drop(columns = ["Ve"])
                     
         return(sys_results)
+        
+        def plot_watbal(*study_areas):
+            res = watbal(study_areas)
+            res.set_index('Element', inplace=True)
+            res.drop(columns=['Area','Vp','Va','Vg','Vv'], inplace=True)
+            res.plot(kind='bar')
