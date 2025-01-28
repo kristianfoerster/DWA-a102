@@ -146,7 +146,7 @@ if st.button('Berechnungstarten'):
         #st.write(result)
     
     if len(list_connected)>0:
-        swale = study_area.infilt_swale(700, *list_connected)
+        swale = study_area.infilt_swale(in_kf, *list_connected)
         list_water_balance=list_unconnected + [swale]
     else:
         list_water_balance = list_unconnected
