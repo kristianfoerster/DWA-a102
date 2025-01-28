@@ -5,7 +5,7 @@ Created on Fri Feb 19 10:12:05 2021
 @author: Edwin Echeverri Salazar
 """
 
-param_rages = {
+param_ranges = {
     'P': [500, 1700, 'Precipitation', 'mm/a'], 
     'ETp' :[450, 700, 'Evapotranspiration', 'mm/a'], 
     'Sp_roof': [0.1, 0.6, 'Storage height (sp)', 'mm/a'],
@@ -42,7 +42,7 @@ param_rages = {
 def validRange(val, param):
     ''' generic function to check parameter range'''
     
-    if ( (val < param_rages[param][0]) or (val > param_rages[param][1]) ): 
-        raise Exception(f"{param_rages[param][2]} is not valid."
-                        f" Acceptable range: {param_rages[param][0]} - {param_rages[param][1]}"
-                        f" {param_rages[param][3]}")
+    if ( (val < param_ranges[param][0]) or (val > param_ranges[param][1]) ): 
+        raise Exception(f"{param_ranges[param][2]} is not valid."
+                        f" Acceptable range: {param_ranges[param][0]} - {param_ranges[param][1]}"
+                        f" {param_ranges[param][3]}")
