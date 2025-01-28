@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module dwa_a102</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">dwa_a102</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/Users/kristianfoerster/Documents/HSWT/Lehre/Urbane_Pflanzkonzepte/dwa102_repository/DWA-a102/dwa_a102.py">/Users/kristianfoerster/Documents/HSWT/Lehre/Urbane_Pflanzkonzepte/dwa102_repository/DWA-a102/dwa_a102.py</a></td></tr></table>
+    <p><span class="code">Created&nbsp;on&nbsp;Sun&nbsp;Feb&nbsp;21&nbsp;16:42:52&nbsp;2021<br>
+&nbsp;<br>
+@author:&nbsp;Edwin&nbsp;Echeverri&nbsp;Salazar</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="dwa_a102.html#Measure">Measure</a>
+</dt><dt class="heading-text"><a href="dwa_a102.html#Surface">Surface</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="dwa_a102.html#StudyArea">StudyArea</a>(<a href="dwa_a102.html#Surface">Surface</a>, <a href="dwa_a102.html#Measure">Measure</a>)
+</dt></dl>
+</dd>
+</dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Measure">class <strong>Measure</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor"><span class="code">&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Measure-__str__"><strong>__str__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;str(self).</span></dd></dl>
+
+<dl><dt><a name="Measure-drainage"><strong>drainage</strong></a>(self, drainage_type, *surfaces)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;drainage&nbsp;elements<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+drainage_type&nbsp;:&nbsp;string<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"pipe",&nbsp;"rohr",&nbsp;"channel",&nbsp;"rinne",&nbsp;"steep&nbsp;ditch",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"steiler&nbsp;graben",&nbsp;"ditch&nbsp;with&nbsp;vegetation",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"gräben&nbsp;mit&nbsp;bewuchs"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Measure-infilt_swale"><strong>infilt_swale</strong></a>(self, kf, *surfaces, fasm='fasm_standard')</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;infiltration&nbsp;swales<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;<br>
+FAsm&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;percentage&nbsp;of&nbsp;infiltration&nbsp;area&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;14&nbsp;-&nbsp;3600&nbsp;mm/h<br>
+&nbsp;&nbsp;FAsf&nbsp;:&nbsp;27.14*kf*exp(-0.303)&nbsp;-&nbsp;62.414*kf*exp(-0.328)&nbsp;(%)<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;FAsf_standard&nbsp;=&nbsp;42.323*kf*exp(-0.314)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Measure-pond_system"><strong>pond_system</strong></a>(self, aw, *surfaces)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;pod&nbsp;systems<br>
+(water&nbsp;surface&nbsp;with&nbsp;permanent&nbsp;storage)<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Aw&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pod&nbsp;surface&nbsp;(m2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+*surfaces&nbsp;:&nbsp;arbitrary&nbsp;number&nbsp;of&nbsp;<a href="#Measure">Measure</a>&nbsp;objects&nbsp;(passed&nbsp;as&nbsp;tuple)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Measure-rainwater_usage"><strong>rainwater_usage</strong></a>(self, vsp, vbr, *surfaces, fabw=2, qbw=60)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;rainwater&nbsp;usage<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+VSp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Specific&nbsp;storage&nbsp;volume&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+VBr&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Available&nbsp;water&nbsp;volume&nbsp;to&nbsp;use&nbsp;in&nbsp;relation&nbsp;to&nbsp;the&nbsp;connected,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;effective&nbsp;runoff&nbsp;area&nbsp;(mm/d)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+FAbw&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proportion&nbsp;of&nbsp;irrigated&nbsp;area&nbsp;in&nbsp;relation&nbsp;to&nbsp;the&nbsp;connected,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;effective&nbsp;runoff&nbsp;area&nbsp;(-)<br>
+&nbsp;&nbsp;&nbsp;<br>
+qBw&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;specific&nbsp;annual&nbsp;requirement&nbsp;for&nbsp;irrigation&nbsp;l/(m^2*a)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;VSp&nbsp;:&nbsp;10&nbsp;-&nbsp;200&nbsp;mm<br>
+&nbsp;&nbsp;VBr&nbsp;:&nbsp;0&nbsp;-&nbsp;5&nbsp;mm/d<br>
+&nbsp;&nbsp;FAbw&nbsp;:&nbsp;0&nbsp;-&nbsp;5<br>
+&nbsp;&nbsp;qBw&nbsp;:&nbsp;0&nbsp;-&nbsp;200&nbsp;l/(m^2*a)<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;FAbw&nbsp;=&nbsp;2<br>
+&nbsp;&nbsp;qBw&nbsp;=&nbsp;60&nbsp;l/(m^2*a)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Measure-surf_infiltration"><strong>surf_infiltration</strong></a>(self, kf, *surfaces, fasf='fasf_standard')</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;surface&nbsp;infiltration<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;<br>
+FAsf&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;percentage&nbsp;of&nbsp;infiltration&nbsp;area&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;325&nbsp;-&nbsp;1100&nbsp;mm/h<br>
+&nbsp;&nbsp;FAsf&nbsp;:&nbsp;66394*kf*exp(-1.197)&nbsp;-&nbsp;70910*kf*exp(-1.117)&nbsp;(%)<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;fasf_standard&nbsp;=&nbsp;94741*kf*exp(-1.195)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Measure-swale_trench"><strong>swale_trench</strong></a>(self, kf, *surfaces, fasm='fasm_standard')</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;swale-trench&nbsp;elements<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;<br>
+FAsm&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;percentage&nbsp;of&nbsp;infiltration&nbsp;area&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;3.6&nbsp;-&nbsp;36&nbsp;mm/h<br>
+&nbsp;&nbsp;FAsf&nbsp;:&nbsp;14.608*kf*exp(-0.406)&nbsp;-&nbsp;47.634*kf*exp(-0.438)&nbsp;(%)<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;FAsf_standard&nbsp;=&nbsp;21.86*kf*exp(-0.348)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Measure-swale_trench_system"><strong>swale_trench_system</strong></a>(self, qdr, kf, *surfaces, fasm='fasm_standard')</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;swale-trench&nbsp;elements<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+qDr&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;throttled&nbsp;discharge&nbsp;yield&nbsp;(l/(s*ha))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;<br>
+FAsf&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;percentage&nbsp;of&nbsp;infiltration&nbsp;area&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;qDr&nbsp;:&nbsp;1&nbsp;-&nbsp;10&nbsp;l/(s*ha)<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;0.36&nbsp;-&nbsp;3.6&nbsp;mm/h<br>
+&nbsp;&nbsp;FAsf&nbsp;:&nbsp;-<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;FAsf_standard&nbsp;=&nbsp;11.79&nbsp;-&nbsp;3.14*LN(qDr)&nbsp;-&nbsp;0.18594*kf<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="StudyArea">class <strong>StudyArea</strong></a>(<a href="dwa_a102.html#Surface">Surface</a>, <a href="dwa_a102.html#Measure">Measure</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#StudyArea">StudyArea</a>(p=800,&nbsp;etp=500,&nbsp;location=None,&nbsp;p_corr_factor=1.0)<br>
+&nbsp;<br>
+#%%&nbsp;Starting&nbsp;class&nbsp;<a href="#Surface">Surface</a><br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="dwa_a102.html#StudyArea">StudyArea</a></dd>
+<dd><a href="dwa_a102.html#Surface">Surface</a></dd>
+<dd><a href="dwa_a102.html#Measure">Measure</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="StudyArea-__init__"><strong>__init__</strong></a>(self, p=800, etp=500, location=None, p_corr_factor=1.0)</dt><dd><span class="code">Creates&nbsp;a&nbsp;new&nbsp;study&nbsp;area&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+p&nbsp;:&nbsp;int,&nbsp;optional<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Avg.&nbsp;annual&nbsp;precipitation&nbsp;depth.&nbsp;The&nbsp;default&nbsp;is&nbsp;800&nbsp;mm&nbsp;/&nbsp;yr<br>
+etp&nbsp;:&nbsp;int,&nbsp;optional<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Avg.&nbsp;annual&nbsp;evapotranspiration&nbsp;depth.&nbsp;The&nbsp;default&nbsp;is&nbsp;500&nbsp;mm&nbsp;/&nbsp;yr.<br>
+location&nbsp;:&nbsp;str,&nbsp;optional<br>
+&nbsp;&nbsp;&nbsp;&nbsp;City&nbsp;name&nbsp;to&nbsp;look&nbsp;up.&nbsp;The&nbsp;default&nbsp;is&nbsp;None.<br>
+p_corr_factor&nbsp;:&nbsp;float,&nbsp;optional<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Sacling&nbsp;factor&nbsp;to&nbsp;correct&nbsp;preipiation&nbsp;for&nbsp;undercatch.&nbsp;The&nbsp;default&nbsp;is&nbsp;1.0.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+None.</span></dd></dl>
+
+<dl><dt><a name="StudyArea-__str__"><strong>__str__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;str(self).</span></dd></dl>
+
+<dl><dt><a name="StudyArea-natural_wb_guess"><strong>natural_wb_guess</strong></a>(self, bagrov_n, soil, slope, gwd, land, verbose=False)</dt><dd><span class="code">Makes&nbsp;a&nbsp;guess&nbsp;about&nbsp;the&nbsp;site's&nbsp;natural&nbsp;water&nbsp;balance&nbsp;and&nbsp;returns&nbsp;an<br>
+array.&nbsp;First&nbsp;element&nbsp;is&nbsp;ET,&nbsp;second&nbsp;is&nbsp;direct&nbsp;runoff,&nbsp;and&nbsp;third&nbsp;is<br>
+groundwater&nbsp;recharge.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+bagrov_n&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Bagrov's&nbsp;n&nbsp;parameter.<br>
+soil&nbsp;:&nbsp;int<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Soil&nbsp;class&nbsp;from&nbsp;range&nbsp;1&nbsp;to&nbsp;5&nbsp;(lower&nbsp;numbers&nbsp;refer&nbsp;to&nbsp;soils&nbsp;with&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lower&nbsp;direct&nbsp;runoff).<br>
+slope&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Slope&nbsp;percentage.<br>
+gwd&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Depth&nbsp;of&nbsp;the&nbsp;water&nbsp;table&nbsp;(ground&nbsp;water).<br>
+land&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Land&nbsp;use&nbsp;type,&nbsp;either&nbsp;open&nbsp;or&nbsp;forest.<br>
+&nbsp;<br>
+verbose&nbsp;:&nbsp;boolean<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Whether&nbsp;to&nbsp;print&nbsp;water&nbsp;balance.&nbsp;Default&nbsp;is&nbsp;False.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+None.</span></dd></dl>
+
+<hr>
+Methods inherited from <a href="dwa_a102.html#Surface">Surface</a>:<br>
+<dl><dt><a name="StudyArea-flat_area"><strong>flat_area</strong></a>(self, area, sp=1)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;flat&nbsp;roofs,&nbsp;asphalt,&nbsp;<br>
+jointless&nbsp;concrete,&nbsp;paving&nbsp;with&nbsp;tight&nbsp;joints.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;P&nbsp;:&nbsp;500&nbsp;-&nbsp;1700&nbsp;mm/a<br>
+&nbsp;&nbsp;ETp&nbsp;:&nbsp;450&nbsp;-&nbsp;700&nbsp;mm/a&nbsp;<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;0.6&nbsp;-&nbsp;3&nbsp;mm<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;Sp-values&nbsp;are:<br>
+&nbsp;&nbsp;Flat&nbsp;roof&nbsp;with&nbsp;rough&nbsp;cover:&nbsp;Sp&nbsp;=&nbsp;1<br>
+&nbsp;&nbsp;Flat&nbsp;roof&nbsp;with&nbsp;gravel&nbsp;cover:&nbsp;Sp&nbsp;=&nbsp;2<br>
+&nbsp;&nbsp;Flat&nbsp;roof&nbsp;with&nbsp;asphalt&nbsp;or&nbsp;jointless&nbsp;concrete&nbsp;cover:&nbsp;Sp&nbsp;=&nbsp;2.5<br>
+&nbsp;&nbsp;Flat&nbsp;roof&nbsp;with&nbsp;plaster&nbsp;(tight&nbsp;joints)&nbsp;cover:&nbsp;Sp&nbsp;=&nbsp;1.5<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-garden"><strong>garden</strong></a>(self, area, a=0.2, g=0.2, v=0.6)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;green&nbsp;areas,&nbsp;gardens<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+a&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;partitioning&nbsp;factor&nbsp;for&nbsp;surface&nbsp;runoff&nbsp;(-)<br>
+&nbsp;&nbsp;<br>
+g&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;partitioning&nbsp;factor&nbsp;for&nbsp;groundwater&nbsp;recharge&nbsp;(-)<br>
+&nbsp;<br>
+v&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;partitioning&nbsp;factor&nbsp;for&nbsp;evapotranspiration&nbsp;(-)<br>
+&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;a,&nbsp;g,&nbsp;v&nbsp;:&nbsp;0&nbsp;-&nbsp;1<br>
+&nbsp;&nbsp;<br>
+&nbsp;&nbsp;a&nbsp;+&nbsp;g&nbsp;+&nbsp;v&nbsp;=&nbsp;1.0<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;Sp-values&nbsp;are:<br>
+&nbsp;&nbsp;low&nbsp;terrain&nbsp;slope:&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;=&nbsp;0.1,&nbsp;g&nbsp;=&nbsp;0.3,&nbsp;v&nbsp;=&nbsp;0.6&nbsp;<br>
+&nbsp;&nbsp;medium&nbsp;terrain&nbsp;slope:&nbsp;a&nbsp;=&nbsp;0.2,&nbsp;g&nbsp;=&nbsp;0.2,&nbsp;v&nbsp;=&nbsp;0.6<br>
+&nbsp;&nbsp;steep&nbsp;terrain&nbsp;slope:&nbsp;&nbsp;a&nbsp;=&nbsp;0.3,&nbsp;g&nbsp;=&nbsp;0.1,&nbsp;v&nbsp;=&nbsp;0.6&nbsp;<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-gravel_cover"><strong>gravel_cover</strong></a>(self, area, h=100, sp=3.5, kf=1.8)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;gravel&nbsp;covers&nbsp;or&nbsp;surfaces<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+h&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;installation&nbsp;heigth&nbsp;(mm)<br>
+&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;h&nbsp;:&nbsp;500&nbsp;-&nbsp;100&nbsp;mm<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;2.5&nbsp;-&nbsp;4.2&nbsp;mm<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;0.72&nbsp;-&nbsp;10&nbsp;mm/h<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;h&nbsp;=&nbsp;100&nbsp;mm<br>
+&nbsp;&nbsp;Sp&nbsp;=&nbsp;3.5&nbsp;mm<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;1.8&nbsp;mm/h<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-green_roof"><strong>green_roof</strong></a>(self, area, h, fg=1.0, AWC=0.5)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;green&nbsp;roofs<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+h&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;installation&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+fg&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;greening&nbsp;factor<br>
+&nbsp;<br>
+AWC&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum&nbsp;available&nbsp;water&nbsp;content,&nbsp;(WKmax)&nbsp;minus&nbsp;wilting&nbsp;point&nbsp;(WP)&nbsp;(-)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;h&nbsp;:&nbsp;40&nbsp;-&nbsp;500&nbsp;mm<br>
+&nbsp;&nbsp;fg&nbsp;:&nbsp;1.0&nbsp;-&nbsp;1.4<br>
+&nbsp;&nbsp;AWC&nbsp;:&nbsp;0.3&nbsp;-&nbsp;0.8<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;AWC&nbsp;=&nbsp;0.5<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-green_roof_shallow"><strong>green_roof_shallow</strong></a>(self, area)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;shallow&nbsp;green&nbsp;roofs&nbsp;&lt;&nbsp;4cm<br>
+according&nbsp;to&nbsp;Schwarzer,&nbsp;A.;&nbsp;Steinhoff-Knopp,&nbsp;B.;&nbsp;Westerholt,&nbsp;D.;<br>
+Förster,&nbsp;K.&nbsp;(2024):&nbsp;Die&nbsp;Wasserbilanz&nbsp;dünnschichtiger&nbsp;Gründachaufbauten<br>
+und&nbsp;deren&nbsp;Variabilität&nbsp;innerhalb&nbsp;Deutschlands.&nbsp;Korrespondenz<br>
+Wasserwirtschaft&nbsp;17&nbsp;(9),&nbsp;S.&nbsp;570-577.&nbsp;DOI:&nbsp;10.3243/kwe2024.09.004<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-paver_stonegrid"><strong>paver_stonegrid</strong></a>(self, area, fa=25, sp=1, wkmax_wp=0.15)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;paver&nbsp;stone&nbsp;grids<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+FA&nbsp;:&nbsp;&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;joint&nbsp;ratio&nbsp;of&nbsp;the&nbsp;pavers&nbsp;or&nbsp;partially&nbsp;permeable&nbsp;elements&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+WKmax_WP&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximal&nbsp;water&nbsp;capacity&nbsp;(WKmax)&nbsp;minus&nbsp;wilting&nbsp;point&nbsp;(WP)&nbsp;(-)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;FA&nbsp;:&nbsp;20&nbsp;-&nbsp;30&nbsp;%<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;0.1&nbsp;-&nbsp;2&nbsp;mm<br>
+&nbsp;&nbsp;WKmax_WP&nbsp;:&nbsp;0.1&nbsp;-&nbsp;0.2<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;FA&nbsp;=&nbsp;25&nbsp;%<br>
+&nbsp;&nbsp;Sp&nbsp;=&nbsp;1<br>
+&nbsp;&nbsp;WKmax_WP&nbsp;=&nbsp;0.15<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-permeable_surface"><strong>permeable_surface</strong></a>(self, area, fa, kf, sp=1, wkmax_wp=0.15)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;permeable&nbsp;surfaces<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+FA&nbsp;:&nbsp;&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;joint&nbsp;ratio&nbsp;of&nbsp;the&nbsp;pavers&nbsp;or&nbsp;partially&nbsp;permeable&nbsp;elements&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;<br>
+WKmax_WP&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximal&nbsp;water&nbsp;capacity&nbsp;(WKmax)&nbsp;minus&nbsp;wilting&nbsp;point&nbsp;(WP)&nbsp;(-)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;FA&nbsp;:&nbsp;2&nbsp;-&nbsp;10&nbsp;%<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;6&nbsp;-&nbsp;100&nbsp;mm/h<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;0.1&nbsp;-&nbsp;2&nbsp;mm<br>
+&nbsp;&nbsp;WKmax_WP&nbsp;:&nbsp;0.1&nbsp;-&nbsp;0.2<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;Sp&nbsp;=&nbsp;1&nbsp;mm<br>
+&nbsp;&nbsp;WKmax_WP&nbsp;=&nbsp;0.15<br>
+&nbsp;&nbsp;kf&nbsp;=&nbsp;18&nbsp;(if&nbsp;2&nbsp;&lt;=&nbsp;FA&nbsp;&lt;&nbsp;6)<br>
+&nbsp;&nbsp;kf&nbsp;=&nbsp;36&nbsp;(if&nbsp;6&nbsp;&lt;=&nbsp;FA&nbsp;&lt;=&nbsp;10)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-porous_surface"><strong>porous_surface</strong></a>(self, area, sp=3.5, h=100, kf=180)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;porous&nbsp;surfaces&nbsp;<br>
+(porous&nbsp;and&nbsp;percolating&nbsp;stones,&nbsp;gravel&nbsp;lawn)&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;<br>
+h&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;installation&nbsp;heigth&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;2.5&nbsp;-&nbsp;4.2&nbsp;mm<br>
+&nbsp;&nbsp;h&nbsp;:&nbsp;50&nbsp;-&nbsp;100&nbsp;mm<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;10&nbsp;-&nbsp;180&nbsp;mm/h<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;Sp&nbsp;=&nbsp;3.5&nbsp;mm<br>
+&nbsp;&nbsp;h&nbsp;=&nbsp;100&nbsp;mm<br>
+&nbsp;&nbsp;kf&nbsp;=&nbsp;180&nbsp;mm/h<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-roof"><strong>roof</strong></a>(self, area, sp=0.3)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;steep&nbsp;roofs&nbsp;(all&nbsp;materials)<br>
+or&nbsp;flat&nbsp;roofs&nbsp;made&nbsp;with&nbsp;smooth&nbsp;materials&nbsp;(e.g.&nbsp;glass,&nbsp;metal)<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;Sp:&nbsp;0.1&nbsp;-&nbsp;0.6&nbsp;mm<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;Sp-values&nbsp;are:<br>
+&nbsp;&nbsp;Steep&nbsp;roof:&nbsp;Sp&nbsp;=&nbsp;0.3&nbsp;mm<br>
+&nbsp;&nbsp;Flat&nbsp;with&nbsp;smooth&nbsp;cover&nbsp;(glass&nbsp;or&nbsp;metal):&nbsp;Sp&nbsp;=&nbsp;0.6&nbsp;mm<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-storage_roof"><strong>storage_roof</strong></a>(self, area, sp=5)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;storage&nbsp;roofs<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;3&nbsp;-&nbsp;10&nbsp;mm<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;Sp-value&nbsp;is:<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;5&nbsp;mm<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="dwa_a102.html#Surface">Surface</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</span></dd>
+</dl>
+<hr>
+Methods inherited from <a href="dwa_a102.html#Measure">Measure</a>:<br>
+<dl><dt><a name="StudyArea-drainage"><strong>drainage</strong></a>(self, drainage_type, *surfaces)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;drainage&nbsp;elements<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+drainage_type&nbsp;:&nbsp;string<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"pipe",&nbsp;"rohr",&nbsp;"channel",&nbsp;"rinne",&nbsp;"steep&nbsp;ditch",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"steiler&nbsp;graben",&nbsp;"ditch&nbsp;with&nbsp;vegetation",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"gräben&nbsp;mit&nbsp;bewuchs"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-infilt_swale"><strong>infilt_swale</strong></a>(self, kf, *surfaces, fasm='fasm_standard')</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;infiltration&nbsp;swales<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;<br>
+FAsm&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;percentage&nbsp;of&nbsp;infiltration&nbsp;area&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;14&nbsp;-&nbsp;3600&nbsp;mm/h<br>
+&nbsp;&nbsp;FAsf&nbsp;:&nbsp;27.14*kf*exp(-0.303)&nbsp;-&nbsp;62.414*kf*exp(-0.328)&nbsp;(%)<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;FAsf_standard&nbsp;=&nbsp;42.323*kf*exp(-0.314)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-pond_system"><strong>pond_system</strong></a>(self, aw, *surfaces)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;pod&nbsp;systems<br>
+(water&nbsp;surface&nbsp;with&nbsp;permanent&nbsp;storage)<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Aw&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pod&nbsp;surface&nbsp;(m2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+*surfaces&nbsp;:&nbsp;arbitrary&nbsp;number&nbsp;of&nbsp;<a href="#Measure">Measure</a>&nbsp;objects&nbsp;(passed&nbsp;as&nbsp;tuple)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-rainwater_usage"><strong>rainwater_usage</strong></a>(self, vsp, vbr, *surfaces, fabw=2, qbw=60)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;rainwater&nbsp;usage<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+VSp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Specific&nbsp;storage&nbsp;volume&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+VBr&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Available&nbsp;water&nbsp;volume&nbsp;to&nbsp;use&nbsp;in&nbsp;relation&nbsp;to&nbsp;the&nbsp;connected,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;effective&nbsp;runoff&nbsp;area&nbsp;(mm/d)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+FAbw&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proportion&nbsp;of&nbsp;irrigated&nbsp;area&nbsp;in&nbsp;relation&nbsp;to&nbsp;the&nbsp;connected,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;effective&nbsp;runoff&nbsp;area&nbsp;(-)<br>
+&nbsp;&nbsp;&nbsp;<br>
+qBw&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;specific&nbsp;annual&nbsp;requirement&nbsp;for&nbsp;irrigation&nbsp;l/(m^2*a)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;VSp&nbsp;:&nbsp;10&nbsp;-&nbsp;200&nbsp;mm<br>
+&nbsp;&nbsp;VBr&nbsp;:&nbsp;0&nbsp;-&nbsp;5&nbsp;mm/d<br>
+&nbsp;&nbsp;FAbw&nbsp;:&nbsp;0&nbsp;-&nbsp;5<br>
+&nbsp;&nbsp;qBw&nbsp;:&nbsp;0&nbsp;-&nbsp;200&nbsp;l/(m^2*a)<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;FAbw&nbsp;=&nbsp;2<br>
+&nbsp;&nbsp;qBw&nbsp;=&nbsp;60&nbsp;l/(m^2*a)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-surf_infiltration"><strong>surf_infiltration</strong></a>(self, kf, *surfaces, fasf='fasf_standard')</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;surface&nbsp;infiltration<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;<br>
+FAsf&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;percentage&nbsp;of&nbsp;infiltration&nbsp;area&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;325&nbsp;-&nbsp;1100&nbsp;mm/h<br>
+&nbsp;&nbsp;FAsf&nbsp;:&nbsp;66394*kf*exp(-1.197)&nbsp;-&nbsp;70910*kf*exp(-1.117)&nbsp;(%)<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;fasf_standard&nbsp;=&nbsp;94741*kf*exp(-1.195)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-swale_trench"><strong>swale_trench</strong></a>(self, kf, *surfaces, fasm='fasm_standard')</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;swale-trench&nbsp;elements<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;<br>
+FAsm&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;percentage&nbsp;of&nbsp;infiltration&nbsp;area&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;3.6&nbsp;-&nbsp;36&nbsp;mm/h<br>
+&nbsp;&nbsp;FAsf&nbsp;:&nbsp;14.608*kf*exp(-0.406)&nbsp;-&nbsp;47.634*kf*exp(-0.438)&nbsp;(%)<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;FAsf_standard&nbsp;=&nbsp;21.86*kf*exp(-0.348)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="StudyArea-swale_trench_system"><strong>swale_trench_system</strong></a>(self, qdr, kf, *surfaces, fasm='fasm_standard')</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;swale-trench&nbsp;elements<br>
+&nbsp;<br>
+Parameters<br>
+----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+qDr&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;throttled&nbsp;discharge&nbsp;yield&nbsp;(l/(s*ha))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;<br>
+FAsf&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;percentage&nbsp;of&nbsp;infiltration&nbsp;area&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;qDr&nbsp;:&nbsp;1&nbsp;-&nbsp;10&nbsp;l/(s*ha)<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;0.36&nbsp;-&nbsp;3.6&nbsp;mm/h<br>
+&nbsp;&nbsp;FAsf&nbsp;:&nbsp;-<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;FAsf_standard&nbsp;=&nbsp;11.79&nbsp;-&nbsp;3.14*LN(qDr)&nbsp;-&nbsp;0.18594*kf<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Surface">class <strong>Surface</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor"><span class="code">&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Surface-__str__"><strong>__str__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;str(self).</span></dd></dl>
+
+<dl><dt><a name="Surface-flat_area"><strong>flat_area</strong></a>(self, area, sp=1)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;flat&nbsp;roofs,&nbsp;asphalt,&nbsp;<br>
+jointless&nbsp;concrete,&nbsp;paving&nbsp;with&nbsp;tight&nbsp;joints.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;P&nbsp;:&nbsp;500&nbsp;-&nbsp;1700&nbsp;mm/a<br>
+&nbsp;&nbsp;ETp&nbsp;:&nbsp;450&nbsp;-&nbsp;700&nbsp;mm/a&nbsp;<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;0.6&nbsp;-&nbsp;3&nbsp;mm<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;Sp-values&nbsp;are:<br>
+&nbsp;&nbsp;Flat&nbsp;roof&nbsp;with&nbsp;rough&nbsp;cover:&nbsp;Sp&nbsp;=&nbsp;1<br>
+&nbsp;&nbsp;Flat&nbsp;roof&nbsp;with&nbsp;gravel&nbsp;cover:&nbsp;Sp&nbsp;=&nbsp;2<br>
+&nbsp;&nbsp;Flat&nbsp;roof&nbsp;with&nbsp;asphalt&nbsp;or&nbsp;jointless&nbsp;concrete&nbsp;cover:&nbsp;Sp&nbsp;=&nbsp;2.5<br>
+&nbsp;&nbsp;Flat&nbsp;roof&nbsp;with&nbsp;plaster&nbsp;(tight&nbsp;joints)&nbsp;cover:&nbsp;Sp&nbsp;=&nbsp;1.5<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Surface-garden"><strong>garden</strong></a>(self, area, a=0.2, g=0.2, v=0.6)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;green&nbsp;areas,&nbsp;gardens<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+a&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;partitioning&nbsp;factor&nbsp;for&nbsp;surface&nbsp;runoff&nbsp;(-)<br>
+&nbsp;&nbsp;<br>
+g&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;partitioning&nbsp;factor&nbsp;for&nbsp;groundwater&nbsp;recharge&nbsp;(-)<br>
+&nbsp;<br>
+v&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;partitioning&nbsp;factor&nbsp;for&nbsp;evapotranspiration&nbsp;(-)<br>
+&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;a,&nbsp;g,&nbsp;v&nbsp;:&nbsp;0&nbsp;-&nbsp;1<br>
+&nbsp;&nbsp;<br>
+&nbsp;&nbsp;a&nbsp;+&nbsp;g&nbsp;+&nbsp;v&nbsp;=&nbsp;1.0<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;Sp-values&nbsp;are:<br>
+&nbsp;&nbsp;low&nbsp;terrain&nbsp;slope:&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;=&nbsp;0.1,&nbsp;g&nbsp;=&nbsp;0.3,&nbsp;v&nbsp;=&nbsp;0.6&nbsp;<br>
+&nbsp;&nbsp;medium&nbsp;terrain&nbsp;slope:&nbsp;a&nbsp;=&nbsp;0.2,&nbsp;g&nbsp;=&nbsp;0.2,&nbsp;v&nbsp;=&nbsp;0.6<br>
+&nbsp;&nbsp;steep&nbsp;terrain&nbsp;slope:&nbsp;&nbsp;a&nbsp;=&nbsp;0.3,&nbsp;g&nbsp;=&nbsp;0.1,&nbsp;v&nbsp;=&nbsp;0.6&nbsp;<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Surface-gravel_cover"><strong>gravel_cover</strong></a>(self, area, h=100, sp=3.5, kf=1.8)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;gravel&nbsp;covers&nbsp;or&nbsp;surfaces<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+h&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;installation&nbsp;heigth&nbsp;(mm)<br>
+&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;h&nbsp;:&nbsp;500&nbsp;-&nbsp;100&nbsp;mm<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;2.5&nbsp;-&nbsp;4.2&nbsp;mm<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;0.72&nbsp;-&nbsp;10&nbsp;mm/h<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;h&nbsp;=&nbsp;100&nbsp;mm<br>
+&nbsp;&nbsp;Sp&nbsp;=&nbsp;3.5&nbsp;mm<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;1.8&nbsp;mm/h<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Surface-green_roof"><strong>green_roof</strong></a>(self, area, h, fg=1.0, AWC=0.5)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;green&nbsp;roofs<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+h&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;installation&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+fg&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;greening&nbsp;factor<br>
+&nbsp;<br>
+AWC&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum&nbsp;available&nbsp;water&nbsp;content,&nbsp;(WKmax)&nbsp;minus&nbsp;wilting&nbsp;point&nbsp;(WP)&nbsp;(-)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;h&nbsp;:&nbsp;40&nbsp;-&nbsp;500&nbsp;mm<br>
+&nbsp;&nbsp;fg&nbsp;:&nbsp;1.0&nbsp;-&nbsp;1.4<br>
+&nbsp;&nbsp;AWC&nbsp;:&nbsp;0.3&nbsp;-&nbsp;0.8<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;AWC&nbsp;=&nbsp;0.5<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Surface-green_roof_shallow"><strong>green_roof_shallow</strong></a>(self, area)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;shallow&nbsp;green&nbsp;roofs&nbsp;&lt;&nbsp;4cm<br>
+according&nbsp;to&nbsp;Schwarzer,&nbsp;A.;&nbsp;Steinhoff-Knopp,&nbsp;B.;&nbsp;Westerholt,&nbsp;D.;<br>
+Förster,&nbsp;K.&nbsp;(2024):&nbsp;Die&nbsp;Wasserbilanz&nbsp;dünnschichtiger&nbsp;Gründachaufbauten<br>
+und&nbsp;deren&nbsp;Variabilität&nbsp;innerhalb&nbsp;Deutschlands.&nbsp;Korrespondenz<br>
+Wasserwirtschaft&nbsp;17&nbsp;(9),&nbsp;S.&nbsp;570-577.&nbsp;DOI:&nbsp;10.3243/kwe2024.09.004<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Surface-paver_stonegrid"><strong>paver_stonegrid</strong></a>(self, area, fa=25, sp=1, wkmax_wp=0.15)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;paver&nbsp;stone&nbsp;grids<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+FA&nbsp;:&nbsp;&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;joint&nbsp;ratio&nbsp;of&nbsp;the&nbsp;pavers&nbsp;or&nbsp;partially&nbsp;permeable&nbsp;elements&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+WKmax_WP&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximal&nbsp;water&nbsp;capacity&nbsp;(WKmax)&nbsp;minus&nbsp;wilting&nbsp;point&nbsp;(WP)&nbsp;(-)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;FA&nbsp;:&nbsp;20&nbsp;-&nbsp;30&nbsp;%<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;0.1&nbsp;-&nbsp;2&nbsp;mm<br>
+&nbsp;&nbsp;WKmax_WP&nbsp;:&nbsp;0.1&nbsp;-&nbsp;0.2<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;FA&nbsp;=&nbsp;25&nbsp;%<br>
+&nbsp;&nbsp;Sp&nbsp;=&nbsp;1<br>
+&nbsp;&nbsp;WKmax_WP&nbsp;=&nbsp;0.15<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Surface-permeable_surface"><strong>permeable_surface</strong></a>(self, area, fa, kf, sp=1, wkmax_wp=0.15)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;permeable&nbsp;surfaces<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+FA&nbsp;:&nbsp;&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;joint&nbsp;ratio&nbsp;of&nbsp;the&nbsp;pavers&nbsp;or&nbsp;partially&nbsp;permeable&nbsp;elements&nbsp;(%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;<br>
+WKmax_WP&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximal&nbsp;water&nbsp;capacity&nbsp;(WKmax)&nbsp;minus&nbsp;wilting&nbsp;point&nbsp;(WP)&nbsp;(-)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;FA&nbsp;:&nbsp;2&nbsp;-&nbsp;10&nbsp;%<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;6&nbsp;-&nbsp;100&nbsp;mm/h<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;0.1&nbsp;-&nbsp;2&nbsp;mm<br>
+&nbsp;&nbsp;WKmax_WP&nbsp;:&nbsp;0.1&nbsp;-&nbsp;0.2<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;Sp&nbsp;=&nbsp;1&nbsp;mm<br>
+&nbsp;&nbsp;WKmax_WP&nbsp;=&nbsp;0.15<br>
+&nbsp;&nbsp;kf&nbsp;=&nbsp;18&nbsp;(if&nbsp;2&nbsp;&lt;=&nbsp;FA&nbsp;&lt;&nbsp;6)<br>
+&nbsp;&nbsp;kf&nbsp;=&nbsp;36&nbsp;(if&nbsp;6&nbsp;&lt;=&nbsp;FA&nbsp;&lt;=&nbsp;10)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Surface-porous_surface"><strong>porous_surface</strong></a>(self, area, sp=3.5, h=100, kf=180)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;porous&nbsp;surfaces&nbsp;<br>
+(porous&nbsp;and&nbsp;percolating&nbsp;stones,&nbsp;gravel&nbsp;lawn)&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;<br>
+h&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;installation&nbsp;heigth&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+kf&nbsp;:&nbsp;float&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hydraulic&nbsp;conductivity&nbsp;(mm&nbsp;/h)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;2.5&nbsp;-&nbsp;4.2&nbsp;mm<br>
+&nbsp;&nbsp;h&nbsp;:&nbsp;50&nbsp;-&nbsp;100&nbsp;mm<br>
+&nbsp;&nbsp;kf&nbsp;:&nbsp;10&nbsp;-&nbsp;180&nbsp;mm/h<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;values&nbsp;are:<br>
+&nbsp;&nbsp;Sp&nbsp;=&nbsp;3.5&nbsp;mm<br>
+&nbsp;&nbsp;h&nbsp;=&nbsp;100&nbsp;mm<br>
+&nbsp;&nbsp;kf&nbsp;=&nbsp;180&nbsp;mm/h<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Surface-roof"><strong>roof</strong></a>(self, area, sp=0.3)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;steep&nbsp;roofs&nbsp;(all&nbsp;materials)<br>
+or&nbsp;flat&nbsp;roofs&nbsp;made&nbsp;with&nbsp;smooth&nbsp;materials&nbsp;(e.g.&nbsp;glass,&nbsp;metal)<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;Sp:&nbsp;0.1&nbsp;-&nbsp;0.6&nbsp;mm<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;Sp-values&nbsp;are:<br>
+&nbsp;&nbsp;Steep&nbsp;roof:&nbsp;Sp&nbsp;=&nbsp;0.3&nbsp;mm<br>
+&nbsp;&nbsp;Flat&nbsp;with&nbsp;smooth&nbsp;cover&nbsp;(glass&nbsp;or&nbsp;metal):&nbsp;Sp&nbsp;=&nbsp;0.6&nbsp;mm<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<dl><dt><a name="Surface-storage_roof"><strong>storage_roof</strong></a>(self, area, sp=5)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;components&nbsp;for&nbsp;storage&nbsp;roofs<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Area&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;element&nbsp;area&nbsp;(m2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Sp&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;height&nbsp;(mm)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Notes&nbsp;&nbsp;&nbsp;&nbsp;<br>
+------<br>
+Ranges&nbsp;of&nbsp;validity&nbsp;for&nbsp;the&nbsp;parameters&nbsp;are:<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;3&nbsp;-&nbsp;10&nbsp;mm<br>
+&nbsp;&nbsp;<br>
+Standard&nbsp;Sp-value&nbsp;is:<br>
+&nbsp;&nbsp;Sp&nbsp;:&nbsp;5&nbsp;mm<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-plot_watbal"><strong>plot_watbal</strong></a>(*study_areas)</dt><dd><span class="code">Visualizes&nbsp;the&nbsp;water&nbsp;balance&nbsp;of&nbsp;a&nbsp;set&nbsp;of&nbsp;surfaces&nbsp;/&nbsp;measures.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+args&nbsp;:&nbsp;DataFrame<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputs&nbsp;of&nbsp;methods&nbsp;from&nbsp;<a href="#StudyArea">StudyArea</a>&nbsp;(Surfaces,&nbsp;Measures)</span></dd></dl>
+ <dl><dt><a name="-watbal"><strong>watbal</strong></a>(*study_areas)</dt><dd><span class="code">Calculates&nbsp;water&nbsp;balance&nbsp;for&nbsp;a&nbsp;system&nbsp;compund&nbsp;of&nbsp;the&nbsp;ouputs&nbsp;from<br>
+methods&nbsp;of&nbsp;<a href="#StudyArea">StudyArea</a>&nbsp;(Surfaces,&nbsp;Measures).<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+args&nbsp;:&nbsp;DataFrame&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputs&nbsp;of&nbsp;methods&nbsp;from&nbsp;<a href="#StudyArea">StudyArea</a>&nbsp;(Surfaces,&nbsp;Measures)&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns<br>
+-------<br>
+results&nbsp;:&nbsp;DataFrame</span></dd></dl>
+</td></tr></table>
+</body></html>
