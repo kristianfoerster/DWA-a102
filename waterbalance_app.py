@@ -13,11 +13,15 @@ from dwa_a102 import StudyArea, watbal
 from check_ranges import param_ranges
 import pandas as pd
 import matplotlib.pyplot as plt
+from treelib import Node, Tree
+
 
 class Element():
-    def __init__(self, element_type, element_params):
+    def __init__(self, element_type, element_params, element_info):
         self.type = element_type
         self.params = element_params
+        self.help = element_info
+
 
 def register_measure(f):
     signature = inspect.signature(f)
@@ -34,27 +38,32 @@ def register_measure(f):
         else:
             list_param.append(split[0])
             list_values.append(split[1])
-    return Element(f.__name__,pd.DataFrame([list_values], columns=list_param, index=['Wert']))
+    helptext = inspect.getdoc(f)
+    return Element(f.__name__,pd.DataFrame([list_values], columns=list_param, index=['Wert']), helptext)
 
-def update_data(index, option):
-    edited_data = st.data_editor(st.session_state.data_list[index], key=f'parameters{index}')
+def update_data(index, option, cont):
+    edited_data = cont.data_editor(st.session_state.data_list[index], key=f'parameters{index}')
     st.session_state.data_list[index] = edited_data
+
 
 # initalize water balance computations
 dict_elements = {}
-dict_elements['Steildach']=register_measure(StudyArea.roof)
-dict_elements['Grünes Dach']=register_measure(StudyArea.green_roof)
-dict_elements['Grünes Dach (minimal)'] = register_measure(StudyArea.green_roof_shallow)
-dict_elements['Einstaudach'] = register_measure(StudyArea.storage_roof)
+dict_elements['Gärten'] = register_measure(StudyArea.garden)
 dict_elements['Versiegelte Fläche'] = register_measure(StudyArea.flat_area)
 dict_elements['wassergebundene Decke'] = register_measure(StudyArea.gravel_cover)
 dict_elements['Teildurchlässige Flächenbeläge'] = register_measure(StudyArea.permeable_surface)
 dict_elements['Poren-/Sicherstreine, Schotter'] = register_measure(StudyArea.porous_surface)
 dict_elements['Rasengittersteine'] = register_measure(StudyArea.paver_stonegrid)
-dict_elements['Gärten'] = register_measure(StudyArea.garden)
+dict_elements['Steildach']=register_measure(StudyArea.roof)
+dict_elements['Grünes Dach']=register_measure(StudyArea.green_roof)
+dict_elements['Grünes Dach (minimal)'] = register_measure(StudyArea.green_roof_shallow)
+dict_elements['Einstaudach'] = register_measure(StudyArea.storage_roof)
 
 # Streamlit app
 st.title('Wasserbilanzberechnung (in Anlehnung an DWA-M102-4)')
+
+# show help texts
+in_showhelp = st.checkbox('Hilfetexte anzeigen (auf Englisch)?')
 
 # climate input
 in_precip = st.number_input('Mittlere Niederschlagshöhe [mm/a]',
@@ -90,10 +99,15 @@ if 'data_list' not in st.session_state:
     st.session_state.data_list = []
 
 for i in range(0,num_objects):
-    st.write(f'Berechnungselement {i}')
-    option=st.selectbox(f'Oberflächentyp {i}', dict_elements.keys(), key=f'select{i}')
+    c = st.container(border=True)
+    c.write(f':blue[Berechnungselement {i}]')
+    option=c.selectbox(f'Oberflächentyp {i}', dict_elements.keys(), key=f'select{i}')
+    if in_showhelp:
+        container = c.container(border=True)
+        container.write(dict_elements[option].help)
+
     if option=='Gärten':
-        st.write('Aufteilungswerte für den natürlichen Referenzzustand (siehe www.naturwb.de):')
+        c.write('Aufteilungswerte für den natürlichen Referenzzustand (siehe www.naturwb.de):')
     # Initialize data_list with default params if not already done
     if len(st.session_state.data_list) <= i:
         st.session_state.data_list.append(dict_elements[option].params)
@@ -101,18 +115,22 @@ for i in range(0,num_objects):
         # Update the DataFrame with the selected option's params if the option changes
         st.session_state.data_list[i] = dict_elements[option].params
     
-    update_data(i, option)
-    st.checkbox('An Maßnahme anschließen?', False, key=f'check{i}')
+    update_data(i, option, c)
+    c.checkbox('An Maßnahme anschließen?', False, key=f'check{i}')
 
 
 
-if st.button('Berechnungstarten'):
+if st.button('Berechnung starten'):
     
     list_connected = list()
     list_unconnected = list()
     
     #st.write(in_precip)
     study_area = StudyArea(in_precip, in_etp)
+    
+    tree = Tree()
+    
+    tree.create_node('System', 'system')
     
     for i in range(0,num_objects):
         #update_data(i)
@@ -148,11 +166,18 @@ if st.button('Berechnungstarten'):
     if len(list_connected)>0:
         swale = study_area.infilt_swale(in_kf, *list_connected)
         list_water_balance=list_unconnected + [swale]
+        tree.create_node(swale.iloc[-1]['Element'], 'measure', parent='system')
+        for ni in list_connected:
+            tree.create_node(ni.iloc[0]['Element'], parent='measure')
     else:
         list_water_balance = list_unconnected
         if len(list_water_balance)==0:
             raise ValueError('Keine gültigen Berechnungselemente gefunden. Bitte überprüfe die Flächen!')
+    for ni in list_unconnected:
+        tree.create_node(ni.iloc[0]['Element'], parent='system')
     
+    
+    st.write(tree)
     
     fig, ax = plt.subplots()
     
