@@ -770,7 +770,7 @@ class Measure(object):
         results : DataFrame 
         '''  
     
-        validRange(kf, 'kf_infilt_swale') 
+        validRange(kf, 'kf_infilt_swale')
         
         if (fasm == "fasm_standard"):
             fasm = 42.323*kf**(-0.314)       
@@ -1311,5 +1311,8 @@ def plot_watbal(*study_areas):
     res = watbal(*study_areas)
     res.set_index('Element', inplace=True)
     res.drop(columns=['Area','Vp','Va','Vg','Vv'], inplace=True)
+    if 'Ve' in res.columns:
+        res.drop(columns=['Ve'], inplace=True)
+    res.plot(ax=ax, kind='bar')
     ax = res.plot(kind='bar')
     ax.set_ylabel('a, v, g [-]')
