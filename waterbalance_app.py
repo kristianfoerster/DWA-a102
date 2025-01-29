@@ -41,7 +41,7 @@ def register_measure(f):
             list_param.append(sparam)
             list_values.append(0.0)
         else:
-            if 'fasm' in sparam:
+            if 'fasm' in sparam or 'fasf' in sparam:
                 continue
             list_param.append(split[0])
             list_values.append(split[1])
@@ -69,7 +69,7 @@ dict_elements['Einstaudach (Storage Roof)'] = register_measure(StudyArea.storage
 
 dict_measures = {}
 dict_measures['Mulde (Infiltration Swale)'] = register_measure(StudyArea.infilt_swale)
-dict_measures['Drainage (Entwässerung)'] = register_measure(StudyArea.drainage)
+#dict_measures['Drainage (Entwässerung)'] = register_measure(StudyArea.drainage) # fix connection types
 dict_measures['Flächenversickerung (Surf infiltration'] = register_measure(StudyArea.surf_infiltration)
 dict_measures['Mulde mit Rigole (Swale Trench)'] = register_measure(StudyArea.swale_trench)
 dict_measures['Mulden-Rigolen-System (Swale-Trench System)'] = register_measure(StudyArea.swale_trench_system)
@@ -235,8 +235,7 @@ if st.button('Berechnung starten'):
     if 'Ve' in res.columns:
         res.drop(columns=['Ve'], inplace=True)
     res.plot(ax=ax, kind='bar')
-    ax.set_ylabel('Aufteilungsfaktoren für Abfluss $a$, Verdunstung $v$, \n \
-                  Grundwasserneubildung $g$ [-]')
+    ax.set_ylabel('Aufteilungsfaktoren für Abfluss $a$, Verdunstung $v$, \nGrundwasserneubildung $g$ (ggf. Entnahme $e$) [-]')
 
     st.pyplot(fig)
     #plot_watbal(*list_water_balance)
