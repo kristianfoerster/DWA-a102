@@ -5,5 +5,15 @@ In the present work, a hydrological model based on regression equations proposed
 
 Important!!!
 
-All the relevant methods to apply the water balance can be found in the file dwa_a102.py
-The additional python files contain functions that are required by dwa_a102.py.
+All the relevant methods to apply the water balance can be found in the file `dwa_a102.py`
+The additional python files contain functions that are required by `dwa_a102.py`.
+
+This work has been developed by students in different teaching contexts and it is designed for teaching purposes (with no warranty).
+
+Files:
+* `dwa_a102.py` is the library with all computations
+* `dwa_a102.html` is an auto-generated help file for the library
+* `Presentation_Examples.ipynb` is a jupyter notebook with examples
+* `Beispiel.ipynb` is another jupyter notebook with examples (in German)
+* `waterbalance_app.py` is a streamlit app, vailable at [https://wasserbilanz.streamlit.app/](https://wasserbilanz.streamlit.app/) (at present, in German only)
+
