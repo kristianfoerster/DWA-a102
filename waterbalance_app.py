@@ -17,29 +17,37 @@ from treelib import Node, Tree
 
 
 class Element():
-    def __init__(self, element_type, element_params, element_info):
+    def __init__(self, element_type, element_params, element_info, has_surf=False):
         self.type = element_type
         self.params = element_params
         self.help = element_info
+        self.surf=has_surf
 
 
 def register_measure(f):
     signature = inspect.signature(f)
     list_param = list()
     list_values = list()
+    surfaces = False
     for param in signature.parameters.values():
         sparam = str(param)
         if sparam=='self': 
             continue
         split = sparam.split('=')
         if len(split)==1:
+            if '*surfaces' in sparam:
+                surfaces = True
+                continue
             list_param.append(sparam)
             list_values.append(0.0)
         else:
+            if 'fasm' in sparam:
+                continue
             list_param.append(split[0])
             list_values.append(split[1])
     helptext = inspect.getdoc(f)
-    return Element(f.__name__,pd.DataFrame([list_values], columns=list_param, index=['Wert']), helptext)
+    return Element(f.__name__,pd.DataFrame([list_values], columns=list_param, 
+                    index=['Wert']), helptext, surfaces)
 
 def update_data(index, option, cont):
     edited_data = cont.data_editor(st.session_state.data_list[index], key=f'parameters{index}')
@@ -48,19 +56,38 @@ def update_data(index, option, cont):
 
 # initalize water balance computations
 dict_elements = {}
-dict_elements['Gärten'] = register_measure(StudyArea.garden)
-dict_elements['Versiegelte Fläche'] = register_measure(StudyArea.flat_area)
-dict_elements['wassergebundene Decke'] = register_measure(StudyArea.gravel_cover)
-dict_elements['Teildurchlässige Flächenbeläge'] = register_measure(StudyArea.permeable_surface)
-dict_elements['Poren-/Sicherstreine, Schotter'] = register_measure(StudyArea.porous_surface)
-dict_elements['Rasengittersteine'] = register_measure(StudyArea.paver_stonegrid)
-dict_elements['Steildach']=register_measure(StudyArea.roof)
-dict_elements['Grünes Dach']=register_measure(StudyArea.green_roof)
-dict_elements['Grünes Dach (minimal)'] = register_measure(StudyArea.green_roof_shallow)
-dict_elements['Einstaudach'] = register_measure(StudyArea.storage_roof)
+dict_elements['Gärten, Grünflächen (Garden / Green Area)'] = register_measure(StudyArea.garden)
+dict_elements['Versiegelte Fläche (Flat Area)'] = register_measure(StudyArea.flat_area)
+dict_elements['wassergebundene Decke (Gravel Cover)'] = register_measure(StudyArea.gravel_cover)
+dict_elements['Teildurchlässige Flächenbeläge (Permeable Surface)'] = register_measure(StudyArea.permeable_surface)
+dict_elements['Poren-/Sicherstreine, Schotter (Porous Surface)'] = register_measure(StudyArea.porous_surface)
+dict_elements['Rasengittersteine (Paver Stonegrid)'] = register_measure(StudyArea.paver_stonegrid)
+dict_elements['Steildach (Roof)']=register_measure(StudyArea.roof)
+dict_elements['Grünes Dach (Green Roof)']=register_measure(StudyArea.green_roof)
+dict_elements['Grünes Dach minimal (Green Roof Shallow)'] = register_measure(StudyArea.green_roof_shallow)
+dict_elements['Einstaudach (Storage Roof)'] = register_measure(StudyArea.storage_roof)
+
+dict_measures = {}
+dict_measures['Mulde (Infiltration Swale)'] = register_measure(StudyArea.infilt_swale)
+dict_measures['Drainage (Entwässerung)'] = register_measure(StudyArea.drainage)
+dict_measures['Flächenversickerung (Surf infiltration'] = register_measure(StudyArea.surf_infiltration)
+dict_measures['Mulde mit Rigole (Swale Trench)'] = register_measure(StudyArea.swale_trench)
+dict_measures['Mulden-Rigolen-System (Swale-Trench System)'] = register_measure(StudyArea.swale_trench_system)
+dict_measures['Regenwassernutzung (Rainwater Usage)'] = register_measure(StudyArea.rainwater_usage)
+dict_measures['Teich (Pond System)'] = register_measure(StudyArea.pond_system)
+
 
 # Streamlit app
-st.title('Wasserbilanzberechnung (in Anlehnung an DWA-M102-4)')
+st.title('Berechnung der langjährigen Wasserbilanz (in Anlehnung an DWA-M102-4)')
+
+st.write('Diese App basiert auf eine Reihe studentischer Projekte an der \
+         Leibniz Universität Hannover und der Hochschule Weihenstephan-\
+         Triesdorf. Es sollen einige wenige Berechnungsgrundlagen aus dem \
+         DWA-Merkblatt DWA M102 Teil 4 möglichst sehr einfach zugänglich \
+         gemacht werden, um studentische Projekte zu untersützen. Es soll \
+         bewusst keine Konkurrenz zur Software WABILA darstellen, da der \
+         Funktionsumfang der App deutlich kleiner ist. Die usprüngliche \
+         Programmierung stammt von EdiSalazar (https://github.com/EdiSalazar/DWA-a102).')
 
 # show help texts
 in_showhelp = st.checkbox('Hilfetexte anzeigen (auf Englisch)?')
@@ -80,8 +107,8 @@ in_etp = st.number_input('Potenzielle Verdunstung  [mm/a]',
 if in_corr_needed:
     in_precip *= (1 + in_precip_corr / 100)
 
-in_kf = st.number_input('Hydraulische Leitfähigkeit Versickerungsmulde [mm/h]', 
-                        param_ranges['kf_infilt_swale'][0], max_value=param_ranges['kf_infilt_swale'][1], value=200)
+#in_kf = st.number_input('Hydraulische Leitfähigkeit Versickerungsmulde [mm/h]', 
+#                        param_ranges['kf_infilt_swale'][0], max_value=param_ranges['kf_infilt_swale'][1], value=200)
 
 # in_a = st.number_input('Aufteilungswert Direktabfluss [-]', format='%.2f',
 #                         min_value=0., max_value=1.0, value=0.2, step=0.01)
@@ -102,9 +129,6 @@ for i in range(0,num_objects):
     c = st.container(border=True)
     c.write(f':blue[Berechnungselement {i}]')
     option=c.selectbox(f'Oberflächentyp {i}', dict_elements.keys(), key=f'select{i}')
-    if in_showhelp:
-        container = c.container(border=True)
-        container.write(dict_elements[option].help)
 
     if option=='Gärten':
         c.write('Aufteilungswerte für den natürlichen Referenzzustand (siehe www.naturwb.de):')
@@ -117,8 +141,17 @@ for i in range(0,num_objects):
     
     update_data(i, option, c)
     c.checkbox('An Maßnahme anschließen?', False, key=f'check{i}')
+    if in_showhelp:
+        container = c.container(border=True)
+        container.write(dict_elements[option].help)
 
-
+container_measure = st.container(border=True)
+sel_measure = container_measure.selectbox(':blue[Regenwassermaßnahme auswählen]', dict_measures.keys(), key='select_meas')
+table_measure = dict_measures[sel_measure].params
+if in_showhelp:
+    container_help = container_measure.container(border=True)
+    container_help.write(dict_measures[sel_measure].help)
+edited_measures = container_measure.data_editor(table_measure, num_rows="dynamic")
 
 if st.button('Berechnung starten'):
     
@@ -164,9 +197,20 @@ if st.button('Berechnung starten'):
         #st.write(result)
     
     if len(list_connected)>0:
-        swale = study_area.infilt_swale(in_kf, *list_connected)
-        list_water_balance=list_unconnected + [swale]
-        tree.create_node(swale.iloc[-1]['Element'], 'measure', parent='system')
+        # replace swale by any arbitrary measure
+        #measure = study_area.infilt_swale(in_kf, *list_connected)
+        
+        # get type of measure and parameters
+        function_m = dict_measures[sel_measure].type
+        params_m = edited_measures.loc['Wert'].values.tolist() #.iloc[0].values
+        
+        #call function
+        result = getattr(study_area, function_m)(*params_m, *list_connected)
+            
+        
+        
+        list_water_balance=list_unconnected + [result]
+        tree.create_node(result.iloc[-1]['Element'], 'measure', parent='system')
         for ni in list_connected:
             tree.create_node(ni.iloc[0]['Element'], parent='measure')
     else:
@@ -188,8 +232,11 @@ if st.button('Berechnung starten'):
     
     res.set_index('Element', inplace=True)
     res.drop(columns=['Area','Vp','Va','Vg','Vv'], inplace=True)
+    if 'Ve' in res.columns:
+        res.drop(columns=['Ve'], inplace=True)
     res.plot(ax=ax, kind='bar')
-    ax.set_ylabel('a, v, g [-]')
+    ax.set_ylabel('Aufteilungsfaktoren für Abfluss $a$, Verdunstung $v$, \n \
+                  Grundwasserneubildung $g$ [-]')
 
     st.pyplot(fig)
     #plot_watbal(*list_water_balance)

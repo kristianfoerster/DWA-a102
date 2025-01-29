@@ -973,7 +973,7 @@ class Measure(object):
     
     #%% Berechnungsansatz B.6: Anlagen zur Niederschlagswassernutzung
     # Rainwater usage
-    def rainwater_usage(self, vsp, vbr, *surfaces, fabw=2, qbw=60):
+    def rainwater_usage(self, vsp, vbr, fabw, qbw, *surfaces):
         '''
         Calculates water balance components for rainwater usage
         
@@ -1078,7 +1078,7 @@ class Measure(object):
         Parameters
         ----------           
         Aw : float
-            pod surface (m2)
+            pond surface (m2)
             
         *surfaces : arbitrary number of Measure objects (passed as tuple)
                             
