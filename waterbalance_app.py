@@ -70,7 +70,7 @@ dict_elements['Einstaudach (Storage Roof)'] = register_measure(StudyArea.storage
 dict_measures = {}
 dict_measures['Mulde (Infiltration Swale)'] = register_measure(StudyArea.infilt_swale)
 #dict_measures['Drainage (Entwässerung)'] = register_measure(StudyArea.drainage) # fix connection types
-dict_measures['Flächenversickerung (Surf infiltration'] = register_measure(StudyArea.surf_infiltration)
+dict_measures['Flächenversickerung (Surf infiltration)'] = register_measure(StudyArea.surf_infiltration)
 dict_measures['Mulde mit Rigole (Swale Trench)'] = register_measure(StudyArea.swale_trench)
 dict_measures['Mulden-Rigolen-System (Swale-Trench System)'] = register_measure(StudyArea.swale_trench_system)
 dict_measures['Regenwassernutzung (Rainwater Usage)'] = register_measure(StudyArea.rainwater_usage)
@@ -80,12 +80,12 @@ dict_measures['Teich (Pond System)'] = register_measure(StudyArea.pond_system)
 # Streamlit app
 st.title('Berechnung der langjährigen Wasserbilanz (in Anlehnung an DWA-M102-4)')
 
-st.write('Diese App basiert auf eine Reihe studentischer Projekte an der \
+st.write('Diese App basiert auf einer Reihe studentischer Projekte an der \
          Leibniz Universität Hannover und der Hochschule Weihenstephan-\
          Triesdorf. Es sollen einige wenige Berechnungsgrundlagen aus dem \
          DWA-Merkblatt DWA M102 Teil 4 möglichst sehr einfach zugänglich \
-         gemacht werden, um studentische Projekte zu untersützen. Es soll \
-         bewusst keine Konkurrenz zur Software WABILA darstellen, da der \
+         gemacht werden, um studentische Projekte zu untersützen. Ferner soll \
+         es bewusst keine Konkurrenz zur Software WABILA darstellen, da der \
          Funktionsumfang der App deutlich kleiner ist. Die usprüngliche \
          Programmierung stammt von EdiSalazar (https://github.com/EdiSalazar/DWA-a102).')
 
@@ -107,20 +107,7 @@ in_etp = st.number_input('Potenzielle Verdunstung  [mm/a]',
 if in_corr_needed:
     in_precip *= (1 + in_precip_corr / 100)
 
-#in_kf = st.number_input('Hydraulische Leitfähigkeit Versickerungsmulde [mm/h]', 
-#                        param_ranges['kf_infilt_swale'][0], max_value=param_ranges['kf_infilt_swale'][1], value=200)
-
-# in_a = st.number_input('Aufteilungswert Direktabfluss [-]', format='%.2f',
-#                         min_value=0., max_value=1.0, value=0.2, step=0.01)
-
-# in_e = st.number_input('Aufteilungswert Verdunstung [-]',  format='%.2f',
-#                         min_value=0., max_value=1.0, value=0.6, step=0.01)
-
-# in_g = st.number_input('Aufteilungswert Grundwasserneubildung [-]', format='%.2f', 
-#                         min_value=0., max_value=1.0, value=0.2, step=0.01)
-
-
-num_objects = st.number_input('Anzahl der Berechnungselemente', min_value=1, value=1, max_value=5) 
+num_objects = st.number_input('Anzahl der Berechnungselemente', min_value=1, value=1, max_value=10) 
 
 if 'data_list' not in st.session_state:
     st.session_state.data_list = []
@@ -130,7 +117,7 @@ for i in range(0,num_objects):
     c.write(f':blue[Berechnungselement {i}]')
     option=c.selectbox(f'Oberflächentyp {i}', dict_elements.keys(), key=f'select{i}')
 
-    if option=='Gärten':
+    if option=='Gärten, Grünflächen (Garden / Green Area)':
         c.write('Aufteilungswerte für den natürlichen Referenzzustand (siehe www.naturwb.de):')
     # Initialize data_list with default params if not already done
     if len(st.session_state.data_list) <= i:
