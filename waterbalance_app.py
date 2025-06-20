@@ -137,20 +137,20 @@ for i in range(0,num_objects):
         st.session_state.data_list[i] = dict_elements[option].params
     
     update_data(i, option, c)
-    c.checkbox('An Maßnahme anschließen? *Connect to Rainwater Management Measure?*', False, key=f'check{i}')
+    c.checkbox('An Maßnahme anschließen? *Connect to Stormwater Management Measure?*', False, key=f'check{i}')
     if in_showhelp:
         container = c.container(border=True)
         container.write(dict_elements[option].help)
 
 container_measure = st.container(border=True)
-sel_measure = container_measure.selectbox(':blue[Regenwassermaßnahme auswählen], *:blue[Select Rainwater Management Measure]*', dict_measures.keys(), key='select_meas')
+sel_measure = container_measure.selectbox(':blue[Regenwassermaßnahme auswählen], *:blue[Select Stormwater Management Measure]*', dict_measures.keys(), key='select_meas')
 table_measure = dict_measures[sel_measure].params
 if in_showhelp:
     container_help = container_measure.container(border=True)
     container_help.write(dict_measures[sel_measure].help)
 edited_measures = container_measure.data_editor(table_measure, num_rows="dynamic")
 
-if st.button('Berechnung starten'):
+if st.button('Start'):
     
     list_connected = list()
     list_unconnected = list()
