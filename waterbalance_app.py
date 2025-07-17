@@ -128,7 +128,7 @@ for i in range(0,num_objects):
 
     if option=='Gärten, Grünflächen (Garden / Green Area)':
         c.write('Aufteilungswerte für den natürlichen Referenzzustand (siehe www.naturwb.de):')
-        c.markdown('*Partioning factors for natural reference state (see, www.naturwb.de):*')
+        c.markdown('*Partitioning factors for natural reference state (see, www.naturwb.de):*')
     # Initialize data_list with default params if not already done
     if len(st.session_state.data_list) <= i:
         st.session_state.data_list.append(dict_elements[option].params)
@@ -182,7 +182,7 @@ if st.button('Start'):
             wb_check = np.round(np.sum(params_i[['a','v','g']].iloc[0]), 2)
             #st.write('Kontrolle der Aufteilungswerte (sollte 0 ergeben): ', wb_check)
             if wb_check != 1.00:
-                raise ValueError('Auteilungswerte ergeben nicht 1.0 in der Summe! Total of partioning factors is not equal 1.')
+                raise ValueError('Auteilungswerte ergeben nicht 1.0 in der Summe! Total of partitioning factors is not equal 1.')
         
         result = getattr(study_area, function_i)(**params_i.iloc[0])
         
@@ -223,7 +223,7 @@ if st.button('Start'):
     fig, ax = plt.subplots()
     
     st.markdown('Aufteilungsfaktoren für Abfluss $a$, Verdunstung $v$, \nGrundwasserneubildung $g$ (ggf. Entnahme $e$) [-], V kennzeichnet Volumenangaben in m$^3$/a.')
-    st.markdown('Partioning factors for runoff $a$, evapotranspiration $v$, \ngroundwater recharge $g$ (withdrawal $e$, if applicable) [-], V denotes volume in m$^3$/yr.')
+    st.markdown('Partitioning factors for runoff $a$, evapotranspiration $v$, \ngroundwater recharge $g$ (withdrawal $e$, if applicable) [-], V denotes volume in m$^3$/yr.')
     
     res = watbal(*list_water_balance)
     
